@@ -1,0 +1,56 @@
+{
+  "name": "server-status-check",
+  "version": "0.2.1",
+  "description": "query the server periodically to check whether it is up",
+  "main": "build/index.js",
+  "scripts": {
+    "test": "NODE_ENV=test mocha --recursive ./build/test",
+    "start": "node ./build/index.js",
+    "serve": "NODE_ENV=production node ./build/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.com/usrpath/server-status-check.git"
+  },
+  "keywords": [
+    "nodejs",
+    "templating",
+    "moustache",
+    "simple",
+    "minimal"
+  ],
+  "author": "Meow Geneva <mail@meow.swiss> (https://meow.swiss)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://bitbucket.com/usrpath/server-status-check/issues"
+  },
+  "homepage": "https://bitbucket.com/usrpath/server-status-check#readme",
+  "devDependencies": {
+    "@types/chai": "4.2.9",
+    "@types/chai-as-promised": "7.1.2",
+    "@types/express": "4.17.7",
+    "@types/express-serve-static-core": "4.17.2",
+    "@types/mocha": "7.0.1",
+    "@types/mysql": "2.15.8",
+    "@types/nodemailer": "6.4.0",
+    "@types/nodemailer-direct-transport": "1.0.31",
+    "@types/nodemailer-smtp-transport": "2.7.4"
+  },
+  "dependencies": {
+    "chai": "3.2.0",
+    "chai-as-promised": "^7.1.1",
+    "di-why": "^0.15.5",
+    "dotenv": "^8.0.0",
+    "express": "latest",
+    "mocha": "7.1.2",
+    "mostachito": "1.1.1",
+    "nexmo": "2.8.0",
+    "nodemailer": "6.6.1",
+    "nodemon": "2.0.3",
+    "saylo": "0.5.0",
+    "typescript": "3.8.3"
+  },
+  "directories": {
+    "test": "test"
+  }
+}

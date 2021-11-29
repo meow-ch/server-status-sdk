@@ -1,0 +1,23 @@
+version: '3.7'
+
+services:
+
+  server-status-check:
+    image: docker.zivili.ch/gbili/node-app-ts:0.0.1
+    container_name: server-status-check
+    environment:
+      APP_DIRNAME: server-status-check
+    volumes:
+      - node-apps:/node-server
+
+
+volumes:
+  node-apps:
+    external:
+      name: git-server-hooks_node-apps
+
+
+networks:
+    default:
+        external:
+            name: nginx-proxy

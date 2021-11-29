@@ -1,0 +1,209 @@
+:root {
+  --font-base-size: 16px;
+  --font-family-for-content: monospace;
+  --font-family-for-titles: Futura,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Fira Sans","Droid Sans","Helvetica Neue","Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol",sans-serif;
+  --font-size-modest-title: 2rem;
+  --font-size-content-mobile: 1.5rem;
+  --font-size-content-desktop: 1.2rem;
+  --font-size-h1-desktop: 4rem;
+  --font-size-h1-mobile: 3.2rem;
+  --font-size-h2-desktop: 2.7rem;
+  --font-size-h2-mobile: 2.3rem;
+  --font-size-h3-desktop: 2.3rem;
+  --font-size-h3-mobile: 2.1rem;
+  --font-size-h4-desktop: 2rem;
+  --font-size-h4-mobile: 1.8rem;
+  --font-size-h5-desktop: 1.5rem;
+  --font-size-h5-mobile: 1.4rem;
+  --theme-dark-link-color: #FEE000;
+  --theme-light-link-color: #3b53d0;
+}
+
+html {
+  font-family: var(--font-family-for-content);
+  font-size: var(--font-base-size);
+}
+
+body {
+  margin: 22px;
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  a {
+    color: var(--theme-dark-link-color);
+  }
+}
+@media (prefers-color-scheme: light) {
+  a {
+    color: var(--theme-light-link-color);
+  }
+}
+a {
+  font-weight: 600;
+  text-decoration: none;
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: var(--font-family-for-titles);
+  margin-bottom: 1.27rem;
+  margin-top: 2.5rem;
+}
+
+p {
+  line-height: 1.57rem;
+  margin-bottom: 1rem;
+  margin-top: 0.57rem;
+}
+
+#main-container {
+  padding-top: 3vh;
+  margin-bottom: 8vh;
+}
+
+#main-container > header {
+  margin-bottom: 3.6em;
+}
+
+@media (max-width: 415px) {
+  h1 {
+    font-size: var(--font-size-h1-mobile);
+  }
+  h2 {
+    font-size: var(--font-size-h2-mobile);
+  }
+  h3 {
+    font-size: var(--font-size-h3-mobile);
+  }
+  h4 {
+    font-size: var(--font-size-h4-mobile);
+  }
+  h5 {
+    font-size: var(--font-size-h5-mobile);
+  }
+
+  #content > .content-inner {
+    max-width: 45rem;
+  }
+  #main-container footer {
+    max-width: 45rem;
+  }
+  table {
+    font-size: var(--font-size-content-mobile);
+  }
+}
+@media (min-width: 416px) {
+  html {
+    font-size: 18px;
+  }
+  h1 {
+    font-size: var(--font-size-h1-desktop);
+  }
+  h2 {
+    font-size: var(--font-size-h2-desktop);
+  }
+  h3 {
+    font-size: var(--font-size-h3-desktop);
+  }
+  h4 {
+    font-size: var(--font-size-h4-desktop);
+  }
+  h5 {
+    font-size: var(--font-size-h5-desktop);
+  }
+  #content > .content-inner {
+    max-width: 37rem;
+  }
+  #main-container footer {
+    max-width: 37rem;
+  }
+  table {
+    font-size: var(--font-size-content-desktop);
+  }
+}
+
+#main-container footer {
+  margin: 10vh auto 7vh auto;
+}
+
+#main-container footer p {
+  font-size: 0.7rem;
+  text-align: right;
+}
+
+/* HOME */
+
+#main-container > header > h1 {
+  text-align: center;
+}
+
+#content {
+  margin: 0 auto;
+  list-style: none;
+  max-width: 90vw;
+}
+
+#content > p[class^="status-"] {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  height: 6vh;
+  margin-bottom: 3rem;
+}
+
+p {
+  max-width: 40em;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+[class^=status-] {
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.status-up {
+  color: #008700;
+}
+.status-down {
+  color: #ee0000;
+}
+.status-unknown {
+  color: #1673e9;
+}
+
+#content > .status-up {
+  background-image: url(/img/heart.gif);
+}
+
+#content > .status-down {
+  background-image: url(/img/broken-heart.gif);
+}
+
+#content > .status-unknown {
+  background-image: url(/img/hourglass.gif);
+}
+
+table {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+table thead tr th {
+  font-family: var(--font-family-for-titles);
+}
+
+table tbody tr td:nth-child(1) {
+  font-weight: 600;
+}
+
+table tr td, table tr th {
+  vertical-align: bottom;
+  padding: 0.5rem;
+}
+table thead tr:nth-child(odd) {
+  background: #F0F4F5;
+}
+table tbody tr:nth-child(even) {
+  background: #F0F4F5;
+}
