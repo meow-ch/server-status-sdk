@@ -4,7 +4,7 @@ const env: { [k: string]: string; } = {};
 
 function hasKey(env: any, key: string) {
   return (env[key] || '').length > 0;
-} 
+}
 
 if (!hasKey(process.env, 'MAIL_USERNAME')) {
   throw new Error('Cannot operate without MAIL_USERNAME, add it to .env file');

@@ -121,7 +121,7 @@ export default class StatusCheckService {
     try {
       status = this.determineStatus();
     } catch (err) {
-      this.handleFailedRequest(err);
+      this.handleFailedRequest(err as Error);
     }
     this.statusChecksCount++;
     this.lastChecked = Date.now();

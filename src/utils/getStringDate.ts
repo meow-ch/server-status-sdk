@@ -1,8 +1,7 @@
+import { zeroPadded } from "./pad";
+
 type TimeUnitElement = { count: number; name: string; toUpperFactor: number; };
 
-function zeroPadded(num: number): string {
-  return String(num).padStart(2, '0');
-}
 export default function (timestamp: number) {
   const today = new Date(timestamp);
   const dd = zeroPadded(today.getDate());
