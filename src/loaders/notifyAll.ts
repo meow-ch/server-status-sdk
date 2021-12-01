@@ -1,17 +1,19 @@
-import * as nodemailer from "nodemailer";
 import { LoadDictElement } from 'di-why/build/src/DiContainer';
+import { SentMessageInfo } from 'nodemailer';
+import { SendMail } from "../utils/mailSend";
 
-type SendMail = (subject: string, text: string) => Promise<nodemailer.SentMessageInfo>;
 type SendSMS = (from: string, text: string) => Promise<string[]>;
 
 type NotifyMessage = { subject: string; text: string; };
-type NotifyAll = (conf: { sms: NotifyMessage, email: NotifyMessage; }) => Promise<[string[], nodemailer.SentMessageInfo]>;
+type NotifyAll = (conf: { sms: NotifyMessage, email: NotifyMessage; }) => Promise<[string[], SentMessageInfo]>;
 
 const loadDictElement: LoadDictElement<NotifyAll> = {
-  factory: function ({ sendSMS, sendMail }: { sendSMS: SendSMS; sendMail: SendMail; }) {
-    return async function (conf: { sms: NotifyMessage, email: NotifyMessage; }) {
+  factory: function ({ sendSMS, mailSend }: { sendSMS: SendSMS; mailSend: SendMail; }) {
+    return async function ({ sms, email: mailOptions }: { sms: NotifyMessage, email: NotifyMessage; }) {
       try {
-        return Promise.all([sendSMS(conf.sms.subject, conf.sms.text), sendMail(conf.email.subject, conf.email.text)]);
+        const sendMailPromise = mailSend(mailOptions);
+        const sendSmsPromise = sendSMS(sms.subject, sms.text);
+        return Promise.all([sendSmsPromise, sendMailPromise]);
       } catch (err) {
         console.log('Mail or SMS were not sent');
         throw err;
@@ -20,7 +22,7 @@ const loadDictElement: LoadDictElement<NotifyAll> = {
   },
   locateDeps: {
     sendSMS: 'sendSMS',
-    sendMail: 'sendMail',
+    mailSend: 'mailSend',
   }
 };
 

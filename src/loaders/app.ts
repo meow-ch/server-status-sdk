@@ -23,14 +23,14 @@ const loadDictElement: LoadDictElement<Application> = {
         siteTitle,
         statusInfo: statusCheckService.getStatusStats()
       };
-      const templatePath = path.normalize(path.join(__dirname, `../../src/views/status.html`));
+      const templatePath = path.normalize(path.join(__dirname, `../../../src/views/status.html`));
       const templateData = await templateHydratorService.loadViewTemplate(viewData, templatePath);
       const body = templateHydratorService.hydrateView(templateData);
       res.send(body);
     });
 
     // serve static files
-    const normalizedPublicDirPath = path.normalize(path.join(__dirname, `../../public`));
+    const normalizedPublicDirPath = path.normalize(path.join(__dirname, `../../../public`));
     me.use(express.static(normalizedPublicDirPath) as any);
   },
 
