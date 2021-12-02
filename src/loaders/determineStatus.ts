@@ -2,15 +2,17 @@ import fs from 'fs';
 import { LoadDictElement } from 'di-why/build/src/DiContainer';
 import { existsDir } from '../utils/promiseFs';
 import { GetRequestor, Status } from '../requestor';
+import Logger from 'saylo';
 
-type DetermnineStatusFactoryProps = { getRequestor: GetRequestor; SSC_USER_PROJECT_ROOT_DIR: string ;SSC_USER_CHECK_FILE_ROOT_RELATIVE_PATH: string, SSC_ENV: string; };
+type DetermnineStatusFactoryProps = { getRequestor: GetRequestor; SSC_USER_PROJECT_ROOT_DIR: string ;SSC_USER_CHECK_FILE_ROOT_RELATIVE_PATH: string, SSC_ENV: string; logger: Logger; };
 
 const loadDictElement: LoadDictElement<Promise<() => Promise<Status>>> = {
   factory: async function ({
     getRequestor,
     SSC_USER_PROJECT_ROOT_DIR,
     SSC_ENV,
-    SSC_USER_CHECK_FILE_ROOT_RELATIVE_PATH
+    SSC_USER_CHECK_FILE_ROOT_RELATIVE_PATH,
+    logger,
   }: DetermnineStatusFactoryProps) {
     const statusCheckScriptsDir = `${SSC_USER_PROJECT_ROOT_DIR}/${SSC_USER_CHECK_FILE_ROOT_RELATIVE_PATH}`;
     const filename = 'check.js'
@@ -22,7 +24,7 @@ const loadDictElement: LoadDictElement<Promise<() => Promise<Status>>> = {
       const checkFactory = await import(filepath);
       return checkFactory.default({ getRequestor });
     } catch(err) {
-      console.log('ERROR: ', err);
+      logger.log('ERROR: ', err);
       throw err;
     }
   },
@@ -31,6 +33,7 @@ const loadDictElement: LoadDictElement<Promise<() => Promise<Status>>> = {
     SSC_USER_PROJECT_ROOT_DIR: 'SSC_USER_PROJECT_ROOT_DIR',
     SSC_USER_CHECK_FILE_ROOT_RELATIVE_PATH: 'SSC_USER_CHECK_FILE_ROOT_RELATIVE_PATH',
     SSC_ENV: 'SSC_ENV',
+    logger: 'logger',
   }
 };
 
