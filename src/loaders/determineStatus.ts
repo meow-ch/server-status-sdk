@@ -3,8 +3,15 @@ import { LoadDictElement } from 'di-why/build/src/DiContainer';
 import { existsDir } from '../utils/promiseFs';
 import { GetRequestor, Status } from '../requestor';
 
+type DetermnineStatusFactoryProps = { getRequestor: GetRequestor; SSC_USER_PROJECT_ROOT_DIR: string ;SSC_USER_CHECK_FILE_ROOT_RELATIVE_PATH: string, SSC_ENV: string; };
+
 const loadDictElement: LoadDictElement<Promise<() => Promise<Status>>> = {
-  factory: async function ({ getRequestor, SSC_USER_PROJECT_ROOT_DIR, SSC_ENV, SSC_USER_CHECK_FILE_ROOT_RELATIVE_PATH }: { getRequestor: GetRequestor; SSC_USER_PROJECT_ROOT_DIR: string ;SSC_USER_CHECK_FILE_ROOT_RELATIVE_PATH: string, SSC_ENV: string; }) {
+  factory: async function ({
+    getRequestor,
+    SSC_USER_PROJECT_ROOT_DIR,
+    SSC_ENV,
+    SSC_USER_CHECK_FILE_ROOT_RELATIVE_PATH
+  }: DetermnineStatusFactoryProps) {
     const statusCheckScriptsDir = `${SSC_USER_PROJECT_ROOT_DIR}/${SSC_USER_CHECK_FILE_ROOT_RELATIVE_PATH}`;
     const filename = 'check.js'
     const filepath = `${statusCheckScriptsDir}/${filename}`;

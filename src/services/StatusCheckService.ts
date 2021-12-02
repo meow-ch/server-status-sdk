@@ -154,14 +154,14 @@ export default class StatusCheckService {
     const aliveForYMDHMS = secondsToYMWDHMSSentence(aliveSeconds);
 
     return {
-        friendlyFullSentence,
-        friendlyStatusPhrase,
-        checkIntervalInMinutes,
-        dateLastChecked,
-        checksSpreeCount,
-        statusName: this.getStatusName(this.status),
-        aliveForYMDHMS,
-      };
+      friendlyFullSentence,
+      friendlyStatusPhrase,
+      checkIntervalInMinutes,
+      dateLastChecked,
+      checksSpreeCount,
+      statusName: this.getStatusName(this.status),
+      aliveForYMDHMS,
+    };
   }
 
   getStatusName(status: Status): StatusName {
