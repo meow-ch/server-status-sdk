@@ -31,7 +31,7 @@ const loadDictElement: LoadDictElement<GetInstanceType<typeof StatusCheckService
   },
   locateDeps: {
     notifyAll: 'notifyAll',
-    determineStatus: 'determineStatus',
+    checkStatus: 'checkStatus',
   }
 };
 

@@ -4,7 +4,7 @@ import DiContainer from 'di-why';
 
 import app from './app';
 import appConfig from './appConfig';
-import determineStatus from './determineStatus'
+import checkStatus from './checkStatus'
 import events from './events';
 import getRequestor from './getRequestor';
 import loggerDict, { logger } from './logger'
@@ -26,7 +26,7 @@ import mailSend from './mailSend';
 const injectionDict = {
   app,
   appConfig,
-  determineStatus,
+  checkStatus,
   events,
   getRequestor,
   logger: loggerDict,

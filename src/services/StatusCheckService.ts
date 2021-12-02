@@ -5,7 +5,7 @@ import getStringDate, { hoursAgo, secondsToYMWDHMSSentence } from "../utils/getS
 type GetRequestor = (uri: string) => Promise<string>;
 type NotifyMessage = { subject: string; text: string; };
 type NotifyAll = (conf: { sms: NotifyMessage, email: NotifyMessage; }) => Promise<[void, any]>;
-type DetermineStatus = () => boolean;
+type CheckStatus = () => boolean;
 type NotificationMessage = { subject: string; text: string; };
 type NotificationMessageFor = { up: NotificationMessage; down: NotificationMessage; };
 type NotificationMessages = { email: NotificationMessageFor; sms: NotificationMessageFor; };
@@ -23,7 +23,7 @@ type StatusStats = {
 }
 
 interface StatusCheckServiceConstructorPropsInterface {
-  determineStatus: DetermineStatus;
+  checkStatus: CheckStatus;
   checkInterval: number;
   getRequestor: GetRequestor;
   notifyAll: NotifyAll;
@@ -34,7 +34,7 @@ interface StatusCheckServiceConstructorPropsInterface {
 
 export default class StatusCheckService {
   public checkInterval: number;
-  public determineStatus: DetermineStatus;
+  public userProvidedCheckStatus: CheckStatus;
   public lastChecked: number | null;
   public lastEmailSentTime: number | null;
   public notifyAll: NotifyAll;
@@ -44,13 +44,13 @@ export default class StatusCheckService {
   public statusChecksCount: number;
   public serverUri: string;
 
-  constructor({ notifyAll, serverUri, determineStatus, checkInterval, onFailNotifyHoursInterval, notificationMessages }: StatusCheckServiceConstructorPropsInterface) {
+  constructor({ notifyAll, serverUri, checkStatus, checkInterval, onFailNotifyHoursInterval, notificationMessages }: StatusCheckServiceConstructorPropsInterface) {
     if (!notifyAll) {
       throw new Dev_ServerBugError('StatusCheck service needs notifyAll to operate');
     }
 
     this.checkInterval = checkInterval;
-    this.determineStatus = determineStatus;
+    this.userProvidedCheckStatus = checkStatus;
     this.lastChecked = null;
     this.lastEmailSentTime = null;
     this.notifyAll = notifyAll;
@@ -119,7 +119,7 @@ export default class StatusCheckService {
   async checkStatus() {
     let status = false;
     try {
-      status = this.determineStatus();
+      status = this.userProvidedCheckStatus();
     } catch (err) {
       this.handleFailedRequest(err as Error);
     }

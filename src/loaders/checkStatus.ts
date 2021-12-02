@@ -22,7 +22,7 @@ const loadDictElement: LoadDictElement<Promise<() => Promise<Status>>> = {
         throw new Error(`You must create a file in your project root under "${filepath}". SSC_USER_PROJECT_ROOT_DIR is: "${SSC_USER_PROJECT_ROOT_DIR}", SSC_ENV is: "${SSC_ENV}"`);
       }
       const checkFactory = await import(filepath);
-      return checkFactory.default({ getRequestor });
+      return checkFactory.default({ getRequestor, logger });
     } catch(err) {
       logger.log('ERROR: ', err);
       throw err;

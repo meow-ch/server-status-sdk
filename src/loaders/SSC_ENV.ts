@@ -4,7 +4,7 @@ import { existsDir } from '../utils/promiseFs';
 import moduleOrClonedRepo from '../utils/moduleOrClonedRepo';
 
 const loadDictElement: LoadDictElement<Promise<string>> = {
-  factory: async function determineIfInstalledViaNpmI() {
+  factory: async function checkIfInstalledViaNpmI() {
     return await moduleOrClonedRepo.isWithinNodeModuleOrClonedRepo(__dirname, existsDir);
   },
 };
