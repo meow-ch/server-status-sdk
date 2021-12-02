@@ -11,9 +11,13 @@ const loadDictElement: LoadDictElement<Application> = {
     const { port, path: pathConf, siteTitle } = appConfig;
 
     me.listen({ port }, () => {
-      logger.log(' STATUS_CHECK = STATUS_CHECK = STATUS_CHECK = STATUS_CHECK = STATUS_CHECK = STATUS_CHECK');
-      logger.log(` STATUS_CHECK = App: localhost:${port}${pathConf} = STATUS_CHECK`);
-      logger.log(' STATUS_CHECK = STATUS_CHECK = STATUS_CHECK = STATUS_CHECK = STATUS_CHECK = STATUS_CHECK');
+      logger.log(' ===========================================================================================');
+      logger.log(' | STATUS_CHECK = STATUS_CHECK = STATUS_CHECK = STATUS_CHECK = STATUS_CHECK = STATUS_CHECK  |');
+      logger.log(' | ---------------------------------------------------------------------------------------- |');
+      logger.log(` | STATUS_CHECK =        App: http://localhost:${port}${pathConf}        = STATUS_CHECK |`);
+      logger.log(' | ---------------------------------------------------------------------------------------- |');
+      logger.log(' | STATUS_CHECK = STATUS_CHECK = STATUS_CHECK = STATUS_CHECK = STATUS_CHECK = STATUS_CHECK  |');
+      logger.log(' ============================================================================================');
     });
 
     // status check path
