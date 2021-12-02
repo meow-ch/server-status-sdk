@@ -11,9 +11,9 @@ const loadDictElement: LoadDictElement<NotifyAll> = {
   factory: function ({ sendSMS, mailSend }: { sendSMS: SendSMS; mailSend: SendMail; }) {
     return async function ({ sms, email: mailOptions }: { sms: NotifyMessage, email: NotifyMessage; }) {
       try {
-        const sendMailPromise = mailSend(mailOptions);
+        const mailSendPromise = mailSend(mailOptions);
         const sendSmsPromise = sendSMS(sms.subject, sms.text);
-        return Promise.all([sendSmsPromise, sendMailPromise]);
+        return Promise.all([sendSmsPromise, mailSendPromise]);
       } catch (err) {
         console.log('Mail or SMS were not sent');
         throw err;
