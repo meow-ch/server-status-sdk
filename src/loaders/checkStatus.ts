@@ -1,10 +1,10 @@
 import fs from 'fs';
 import { LoadDictElement } from 'di-why/build/src/DiContainer';
-import { existsDir } from '../utils/promiseFs';
-import { GetRequestor, Status } from '../requestor';
+import { existsDir } from 'swiss-army-knifey/build/src/utils/promiseFs';
+import { Env, GetRequestor, Status } from '../requestor';
 import Logger from 'saylo';
 
-type DetermnineStatusFactoryProps = { getRequestor: GetRequestor; SSC_USER_PROJECT_ROOT_DIR: string ;SSC_USER_CHECK_FILE_ROOT_RELATIVE_PATH: string, SSC_ENV: string; logger: Logger; env: { [k: string]: string; }};
+type DetermnineStatusFactoryProps = { getRequestor: GetRequestor; SSC_USER_PROJECT_ROOT_DIR: string ;SSC_USER_CHECK_FILE_ROOT_RELATIVE_PATH: string, SSC_ENV: string; logger: Logger; env: Env};
 
 const loadDictElement: LoadDictElement<Promise<() => Promise<Status>>> = {
   factory: async function ({

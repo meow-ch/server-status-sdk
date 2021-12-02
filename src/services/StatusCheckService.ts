@@ -1,6 +1,6 @@
 import Dev_ServerBugError from "../errors/Dev_ServerBugError";
-import sleep from "../utils/sleep";
-import getStringDate, { hoursAgo, secondsToYMWDHMSSentence } from "../utils/getStringDate";
+import sleep from 'swiss-army-knifey/build/src/utils/sleep';
+import getStringDate, { hoursAgo, secondsToYMWDHMSSentence } from "swiss-army-knifey/build/src/utils/getStringDate";
 
 type GetRequestor = (uri: string) => Promise<string>;
 type NotifyMessage = { subject: string; text: string; };

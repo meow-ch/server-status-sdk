@@ -1,6 +1,6 @@
 import { LoadDictElement } from 'di-why/build/src/DiContainer';
 import { SentMessageInfo } from 'nodemailer';
-import Logger from 'saylo';
+import { WithLog } from 'swiss-army-knifey/build/src/commonTypes';
 import { SendMail } from "../utils/mailSend";
 
 type SendSMS = (from: string, text: string) => Promise<string[]>;
@@ -8,7 +8,7 @@ type SendSMS = (from: string, text: string) => Promise<string[]>;
 type NotifyMessage = { subject: string; text: string; };
 type NotifyAll = (conf: { sms: NotifyMessage, email: NotifyMessage; }) => Promise<[string[], SentMessageInfo]>;
 
-type NotifyAllProps = { sendSMS: SendSMS; mailSend: SendMail; logger: Logger; };
+type NotifyAllProps = { sendSMS: SendSMS; mailSend: SendMail; logger: WithLog; };
 
 const loadDictElement: LoadDictElement<NotifyAll> = {
   factory: function ({ sendSMS, mailSend, logger }: NotifyAllProps) {

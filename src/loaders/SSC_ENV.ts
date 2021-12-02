@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import { LoadDictElement } from 'di-why/build/src/DiContainer';
-import { existsDir } from '../utils/promiseFs';
-import moduleOrClonedRepo from '../utils/moduleOrClonedRepo';
+import { existsDir } from 'swiss-army-knifey/build/src/utils/promiseFs';
+import moduleOrClonedRepo from 'swiss-army-knifey/build/src/utils/moduleOrClonedRepo';
 
 const loadDictElement: LoadDictElement<Promise<string>> = {
   factory: async function checkIfInstalledViaNpmI() {

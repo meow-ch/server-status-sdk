@@ -1,5 +1,8 @@
 import { LoadDictElement } from "di-why/build/src/DiContainer";
-import { LoggerInterface } from "saylo/build/src/Logger";
+
+type LoggerInterface = {
+  log: (...args: any[]) => void;
+}
 
 const loadDictElement: LoadDictElement = {
   factory({ logger }: { logger: LoggerInterface }) {

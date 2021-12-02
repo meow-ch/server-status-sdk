@@ -1,7 +1,9 @@
+import { LoadDictElement } from 'di-why/build/src/DiContainer';
 import 'dotenv/config';
-import { hasKeyOrThrow } from '../utils/envHasKey';
+import { Env } from '../requestor';
+import { hasKeyOrThrow } from 'swiss-army-knifey/build/src/utils/envHasKey';
 
-const env: { [k: string]: string; } = {};
+const env: Env = {};
 
 hasKeyOrThrow(process.env, 'CHECK_INTERVAL_SEC');
 
@@ -22,4 +24,8 @@ process.env = {
   ...env,
 }
 
-export default env;
+const loadDictElement: LoadDictElement<Env> = {
+  instance: process.env,
+}
+
+export default loadDictElement;
