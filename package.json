@@ -1,6 +1,6 @@
 {
   "name": "server-status-check",
-  "version": "0.3.9",
+  "version": "0.3.10",
   "description": "query the server periodically to check whether it is up",
   "main": "build/index.js",
   "scripts": {

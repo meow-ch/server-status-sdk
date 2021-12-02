@@ -8,7 +8,11 @@ type SendSMSFactoryProps = { apiKey?: string; apiSecret?: string; toCommaList?: 
 const loadDictElement: LoadDictElement<(from: string, text: string) => Promise<string[]>> = {
   factory: function ({ apiKey, apiSecret, toCommaList, logger}: SendSMSFactoryProps) {
     if (!toCommaList || toCommaList.length <= 3 || !apiKey || !apiSecret) {
-      return async (_: string, __: string) => ['No phone number | apiKey | apiSecret provided, skipping SMS sending.'];
+      return async (_: string, __: string) => {
+        const res = 'No phone number | apiKey | apiSecret provided, skipping SMS sending.';
+        logger.log(res);
+        return [res];
+      };
     }
     return sendSMS(apiKey, apiSecret, toCommaList.split(','), logger);
   },
