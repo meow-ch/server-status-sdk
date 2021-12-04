@@ -1,16 +1,15 @@
 import Dev_ServerBugError from "../errors/Dev_ServerBugError";
 import sleep from 'swiss-army-knifey/build/src/utils/sleep';
 import getStringDate, { hoursAgo, secondsToYMWDHMSSentence } from "swiss-army-knifey/build/src/utils/getStringDate";
+import { CheckStatus, InitializedStatus, MaybeUninitializedStatus, WrappedStatus } from "../requestor";
 
 type GetRequestor = (uri: string) => Promise<string>;
 type NotifyMessage = { subject: string; text: string; };
 type NotifyAll = (conf: { sms: NotifyMessage, email: NotifyMessage; }) => Promise<[void, any]>;
-type CheckStatus = () => boolean;
 type NotificationMessage = { subject: string; text: string; };
 type NotificationMessageFor = { up: NotificationMessage; down: NotificationMessage; };
 type NotificationMessages = { email: NotificationMessageFor; sms: NotificationMessageFor; };
 type NotificationMessagesConfig = { all: NotificationMessageFor; } & NotificationMessages;
-type Status = boolean | null;
 type StatusName = 'up' | 'down' | 'unknown';
 type StatusStats = {
   friendlyFullSentence: string;
@@ -20,6 +19,7 @@ type StatusStats = {
   checksSpreeCount: number;
   aliveForYMDHMS: string;
   statusName: StatusName;
+  errors?: Error[];
 }
 
 interface StatusCheckServiceConstructorPropsInterface {
@@ -40,7 +40,7 @@ export default class StatusCheckService {
   public notifyAll: NotifyAll;
   public notificationMessages: NotificationMessages;
   public onFailNotifyHoursInterval: number;
-  public status: Status;
+  public wrappedStatus: WrappedStatus<MaybeUninitializedStatus>;
   public statusChecksCount: number;
   public serverUri: string;
 
@@ -56,7 +56,7 @@ export default class StatusCheckService {
     this.notifyAll = notifyAll;
     this.onFailNotifyHoursInterval = onFailNotifyHoursInterval;
     this.serverUri = serverUri;
-    this.status = null;
+    this.wrappedStatus = { status: null };
     this.statusChecksCount = 0;
 
     if (notificationMessages.all !== undefined) {
@@ -76,21 +76,21 @@ export default class StatusCheckService {
     }
   }
 
-  statusChanged(status: boolean) {
-    return this.status !== status;
+  statusChanged(status: InitializedStatus) {
+    return this.wrappedStatus.status !== status;
   }
 
-  changedStatusOrDownStatusForMoreThanOneHour(status: boolean) {
+  changedStatusOrDownStatusForMoreThanOneHour(status: InitializedStatus) {
     const notifyOnlyOnStatusChanges = this.onFailNotifyHoursInterval === 0;
     const notifiedTooLongAgo = this.lastEmailSentTime !== null && this.lastEmailSentTime <= hoursAgo(this.onFailNotifyHoursInterval);
     return this.statusChanged(status) || (!notifyOnlyOnStatusChanges && (!status && notifiedTooLongAgo));
   }
 
-  shouldNotifyCurrentStatus(status: boolean) {
+  shouldNotifyCurrentStatus(status: InitializedStatus) {
     return this.changedStatusOrDownStatusForMoreThanOneHour(status)
   }
 
-  getStatusFriendlyPhrase(status: Status) {
+  getStatusFriendlyPhrase(status: MaybeUninitializedStatus) {
     return `${status === null
       ? 'Please wait: system status'
       : status
@@ -99,7 +99,7 @@ export default class StatusCheckService {
       } is ${this.getStatusName(status)}!`;
   }
 
-  async notifyServiceStatus(status: Status) {
+  async notifyServiceStatus({ status }: WrappedStatus<InitializedStatus>) {
     if (this.lastChecked !== null && status !== null) {
       await this.notifyAll({
         email: { ...this.notificationMessages.email[status ? "up" : "down"] },
@@ -108,24 +108,24 @@ export default class StatusCheckService {
     }
   }
 
-  async handleNewStatus(status: boolean) {
-    if (this.shouldNotifyCurrentStatus(status)) {
-      this.notifyServiceStatus(status);
+  async handleNewStatus(w: WrappedStatus<InitializedStatus>) {
+    if (this.shouldNotifyCurrentStatus(w.status)) {
+      this.notifyServiceStatus(w);
       this.lastEmailSentTime = Date.now();
     }
-    this.status = status;
+    this.wrappedStatus.status = w.status;
   }
 
-  async checkStatus() {
-    let status = false;
+  async checkStatus(): Promise<WrappedStatus<InitializedStatus>> {
+    let wrappedStatus = { status: false };
     try {
-      status = this.userProvidedCheckStatus();
+      wrappedStatus = this.userProvidedCheckStatus();
     } catch (err) {
       this.handleFailedRequest(err as Error);
     }
     this.statusChecksCount++;
     this.lastChecked = Date.now();
-    return status;
+    return wrappedStatus;
   }
 
   handleFailedRequest(err: Error) {
@@ -144,8 +144,8 @@ export default class StatusCheckService {
     const dateLastChecked = this.lastChecked === null ? 'Never' : getStringDate(this.timezoned(this.lastChecked));
     const checkIntervalInMinutes = this.getCheckIntervalInMinutes();
     const checksSpreeCount = this.statusChecksCount;
-    const friendlyStatusPhrase = this.status === null ? 'Unknown' : this.getStatusFriendlyPhrase(this.status);
-    const friendlyFullSentence = (this.lastChecked === null || this.status === null)
+    const friendlyStatusPhrase = this.wrappedStatus.status === null ? 'Unknown' : this.getStatusFriendlyPhrase(this.wrappedStatus.status);
+    const friendlyFullSentence = (this.lastChecked === null || this.wrappedStatus.status === null)
       ? `Not checked yet. Please wait ${checkIntervalInMinutes} min. or so and refresh this page.`
       : `${friendlyStatusPhrase}. Last time I checked was on ${dateLastChecked.split(', ').join(' at ')} (checked ${checksSpreeCount} time${ checksSpreeCount === 1 ? '' : 's'} in a row without restarting). I check every ${checkIntervalInMinutes} min.`;
 
@@ -153,18 +153,21 @@ export default class StatusCheckService {
     const aliveSeconds = this.checkInterval * (this.statusChecksCount - 1) + (secondsBetweenLastCheckAndNow < this.checkInterval ? secondsBetweenLastCheckAndNow : 0);
     const aliveForYMDHMS = secondsToYMWDHMSSentence(aliveSeconds);
 
+    const checkReturnedErrors = this.wrappedStatus.errors ? { errors: this.wrappedStatus.errors } : {};
+
     return {
+      ...checkReturnedErrors,
       friendlyFullSentence,
       friendlyStatusPhrase,
       checkIntervalInMinutes,
       dateLastChecked,
       checksSpreeCount,
-      statusName: this.getStatusName(this.status),
+      statusName: this.getStatusName(this.wrappedStatus.status),
       aliveForYMDHMS,
     };
   }
 
-  getStatusName(status: Status): StatusName {
+  getStatusName(status: MaybeUninitializedStatus): StatusName {
     if (status === null) return 'unknown';
     return status ? 'up' : 'down';
   }

@@ -12,4 +12,10 @@ export type CheckStatusFactoryProps = {}
 export type CheckStatusFactory = (props: CheckStatusFactoryProps) => CheckStatusFunc;
 export type StatusOrError = boolean | Error;
 export type SessionIdOrError = string | Error;
-export type Status = boolean | null;
+export type InitializedStatus = boolean;
+export type MaybeUninitializedStatus = InitializedStatus | null;
+export type WrappedStatus<T, O = any> = {}
+  & { status: T; }
+  & { errors?: Error[]; }
+  & { other?: O; }
+export type CheckStatus<O = any> = () => WrappedStatus<InitializedStatus, O>;
