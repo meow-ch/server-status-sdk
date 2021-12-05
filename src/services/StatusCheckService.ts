@@ -113,7 +113,7 @@ export default class StatusCheckService {
       this.notifyServiceStatus(w);
       this.lastEmailSentTime = Date.now();
     }
-    this.wrappedStatus.status = w.status;
+    this.wrappedStatus = w;
   }
 
   async checkStatus(): Promise<WrappedStatus<InitializedStatus>> {
