@@ -28,8 +28,8 @@ const loadDictElement: LoadDictElement<Application> = {
         statusInfo: statusCheckService.getStatusStats()
       };
       const templatePath = path.normalize(path.join(__dirname, `../../../src/views/status.html`));
-      const templateData = await templateHydratorService.loadViewTemplate(viewData, templatePath);
-      const body = templateHydratorService.hydrateView(templateData);
+      const viewTemplate = await templateHydratorService.loadViewTemplate(templatePath);
+      const body = templateHydratorService.hydrateView({ viewTemplate, viewData });
       res.send(body);
     });
 

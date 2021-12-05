@@ -8,8 +8,9 @@ interface HtmlTemplateConfInterface {
 
 interface HydrateViewPropsInterface { viewTemplate: string; viewData: ViewData; }
 
+type LoadViewTemplateResolveParam = { viewTemplate: string; };
 interface HtmlTemplateInterface {
-  loadViewTemplate(viewData: ViewData, filepath: string): Promise<unknown>;
+  loadViewTemplate(filepath: string): Promise<LoadViewTemplateResolveParam>;
   hydrateView: HydrateViewCallback;
 }
 
@@ -23,7 +24,6 @@ interface ViewData {
   [k: string]: string | ViewData | ViewData[];
 }
 interface HydrateViewProps { viewTemplate: string; viewData: ViewData; }
-type LoadViewTemplateResolveParam = { viewTemplate: string; viewData: ViewData; };
 type HydrateViewMethod = (param: LoadViewTemplateResolveParam) => string;
 type MostachitoHydrateMethod = (viewTemplate: string, viewData: ViewData) => string;
 interface MostachitoInterface {
@@ -33,6 +33,6 @@ interface TemplateHydratorServiceConstructor {
   new ({ mostachito }: { mostachito: MostachitoInterface; }): TemplateHydratorServiceInterface;
 }
 interface TemplateHydratorServiceInterface {
-  loadViewTemplate: (viewData: ViewData, filePath: string) => Promise<LoadViewTemplateResolveParam>;
+  loadViewTemplate: (filePath: string) => Promise<LoadViewTemplateResolveParam>;
   hydrateView: HydrateViewMethod;
 }

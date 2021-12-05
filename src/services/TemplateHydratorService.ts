@@ -9,16 +9,16 @@ export default class TemplateHydratorService { //implements TemplateHydratorServ
     this.hydrateView = this.hydrateView.bind(this);
   }
 
-  loadViewTemplate(viewData: ViewData, filepath: string): Promise<LoadViewTemplateResolveParam> {
+  loadViewTemplate(filepath: string): Promise<LoadViewTemplateResolveParam> {
     return new Promise<LoadViewTemplateResolveParam>(function(resolve, reject) {
       fs.readFile(filepath, 'utf-8', function(err, viewTemplate) {
         if (err) return reject(err);
-        resolve({ viewTemplate, viewData });
+        resolve({ viewTemplate });
       });
     });
   }
 
-  hydrateView({ viewTemplate, viewData }: LoadViewTemplateResolveParam): string {
+  hydrateView({ viewTemplate, viewData }: HydrateViewProps): string {
     return this.mostachito.hydrate(viewTemplate, viewData);
   }
 }

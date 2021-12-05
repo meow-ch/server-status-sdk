@@ -46,12 +46,12 @@
               <td>Bot alive for</td>
               <td>{{ statusInfo.aliveForYMDHMS }}</td>
             </tr>
-            {{errors as error
+            {{statusInfo.errors as error
               <tr>
                 <td>Error message :</td>
                 <td>{{ error.message }}</td>
               </tr>
-            errors}}
+            statusInfo.errors}}
           </tbody>
         </table>
       </div>
