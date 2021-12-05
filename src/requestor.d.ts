@@ -3,7 +3,7 @@ import Logger from "saylo";
 export type RequestOptions = import("https").RequestOptions;
 export type GetRequestorResolveParam = { data: string; response: { rawHeaders: string[]; headers: { [k: string]: string | string[] | undefined; } } };
 export type GetRequestor = (uri: string, options?: RequestOptions) => Promise<GetRequestorResolveParam>;
-export type CheckStatusFunc = () => Promise<Status>;
+export type CheckStatusFunc<O = any> = () => Promise<WrappedStatus<InitializedStatus, O>>;
 export type Env = { [k: string]: string | undefined; };
 export type CheckStatusFactoryProps = {}
   & { getRequestor: GetRequestor; }
@@ -18,4 +18,3 @@ export type WrappedStatus<T, O = any> = {}
   & { status: T; }
   & { errors?: Error[]; }
   & { other?: O; }
-export type CheckStatus<O = any> = () => WrappedStatus<InitializedStatus, O>;

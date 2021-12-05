@@ -1,7 +1,7 @@
 import Dev_ServerBugError from "../errors/Dev_ServerBugError";
 import sleep from 'swiss-army-knifey/build/src/utils/sleep';
 import getStringDate, { hoursAgo, secondsToYMWDHMSSentence } from "swiss-army-knifey/build/src/utils/getStringDate";
-import { CheckStatus, InitializedStatus, MaybeUninitializedStatus, WrappedStatus } from "../requestor";
+import { CheckStatusFunc, InitializedStatus, MaybeUninitializedStatus, WrappedStatus } from "../requestor";
 
 type GetRequestor = (uri: string) => Promise<string>;
 type NotifyMessage = { subject: string; text: string; };
@@ -23,7 +23,7 @@ type StatusStats = {
 }
 
 interface StatusCheckServiceConstructorPropsInterface {
-  checkStatus: CheckStatus;
+  checkStatus: CheckStatusFunc;
   checkInterval: number;
   getRequestor: GetRequestor;
   notifyAll: NotifyAll;
@@ -34,7 +34,7 @@ interface StatusCheckServiceConstructorPropsInterface {
 
 export default class StatusCheckService {
   public checkInterval: number;
-  public userProvidedCheckStatus: CheckStatus;
+  public userProvidedCheckStatus: CheckStatusFunc;
   public lastChecked: number | null;
   public lastEmailSentTime: number | null;
   public notifyAll: NotifyAll;
@@ -119,7 +119,7 @@ export default class StatusCheckService {
   async checkStatus(): Promise<WrappedStatus<InitializedStatus>> {
     let wrappedStatus = { status: false };
     try {
-      wrappedStatus = this.userProvidedCheckStatus();
+      wrappedStatus = await this.userProvidedCheckStatus();
     } catch (err) {
       this.handleFailedRequest(err as Error);
     }
