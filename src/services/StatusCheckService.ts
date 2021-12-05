@@ -1,7 +1,7 @@
 import Dev_ServerBugError from "../errors/Dev_ServerBugError";
 import sleep from 'swiss-army-knifey/build/src/utils/sleep';
 import getStringDate, { hoursAgo, secondsToYMWDHMSSentence } from "swiss-army-knifey/build/src/utils/getStringDate";
-import { CheckStatusFunc, InitializedStatus, MaybeUninitializedStatus, WrappedStatus } from "../requestor";
+import { CheckStatusFunc, InitializedStatus, MaybeUninitializedStatus, WrappedStatus, WrappedStatusE } from "../requestor";
 
 type GetRequestor = (uri: string) => Promise<string>;
 type NotifyMessage = { subject: string; text: string; };
@@ -19,7 +19,7 @@ type StatusStats = {
   checksSpreeCount: number;
   aliveForYMDHMS: string;
   statusName: StatusName;
-  errors?: Error[];
+  errors: Error[];
 }
 
 interface StatusCheckServiceConstructorPropsInterface {
@@ -32,6 +32,10 @@ interface StatusCheckServiceConstructorPropsInterface {
   notificationMessages: NotificationMessagesConfig;
 }
 
+function isWrappedStatusWithInitializedErrors<T>(w: WrappedStatus<T>): w is WrappedStatusE<T> {
+  return w.errors !== undefined && Array.isArray(w.errors);
+}
+
 export default class StatusCheckService {
   public checkInterval: number;
   public userProvidedCheckStatus: CheckStatusFunc;
@@ -40,7 +44,7 @@ export default class StatusCheckService {
   public notifyAll: NotifyAll;
   public notificationMessages: NotificationMessages;
   public onFailNotifyHoursInterval: number;
-  public wrappedStatus: WrappedStatus<MaybeUninitializedStatus>;
+  public wrappedStatus: WrappedStatusE<MaybeUninitializedStatus>;
   public statusChecksCount: number;
   public serverUri: string;
 
@@ -56,7 +60,7 @@ export default class StatusCheckService {
     this.notifyAll = notifyAll;
     this.onFailNotifyHoursInterval = onFailNotifyHoursInterval;
     this.serverUri = serverUri;
-    this.wrappedStatus = { status: null };
+    this.wrappedStatus = { status: null, errors: [] };
     this.statusChecksCount = 0;
 
     if (notificationMessages.all !== undefined) {
@@ -113,7 +117,9 @@ export default class StatusCheckService {
       this.notifyServiceStatus(w);
       this.lastEmailSentTime = Date.now();
     }
-    this.wrappedStatus = w;
+    this.wrappedStatus = isWrappedStatusWithInitializedErrors(w)
+      ? w
+      : { ...w, errors: [] };
   }
 
   async checkStatus(): Promise<WrappedStatus<InitializedStatus>> {
@@ -153,10 +159,8 @@ export default class StatusCheckService {
     const aliveSeconds = this.checkInterval * (this.statusChecksCount - 1) + (secondsBetweenLastCheckAndNow < this.checkInterval ? secondsBetweenLastCheckAndNow : 0);
     const aliveForYMDHMS = secondsToYMWDHMSSentence(aliveSeconds);
 
-    const checkReturnedErrors = this.wrappedStatus.errors ? { errors: this.wrappedStatus.errors } : {};
-
     return {
-      ...checkReturnedErrors,
+      errors: this.wrappedStatus.errors,
       friendlyFullSentence,
       friendlyStatusPhrase,
       checkIntervalInMinutes,

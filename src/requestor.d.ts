@@ -18,3 +18,8 @@ export type WrappedStatus<T, O = any> = {}
   & { status: T; }
   & { errors?: Error[]; }
   & { other?: O; }
+
+export type WrappedStatusE<T, O = any> = {}
+  & { status: T; }
+  & { errors: Error[]; }
+  & { other?: O; }
