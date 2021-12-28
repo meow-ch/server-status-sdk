@@ -142,12 +142,8 @@ export default class StatusCheckService {
     return Math.ceil(this.checkInterval / 60);
   }
 
-  timezoned(timestamp: number) {
-    return timestamp + 2*60*60*1000;
-  }
-
   getStatusStats(): StatusStats {
-    const dateLastChecked = this.lastChecked === null ? 'Never' : getStringDate(this.timezoned(this.lastChecked));
+    const dateLastChecked = this.lastChecked === null ? 'Never' : getStringDate(this.lastChecked);
     const checkIntervalInMinutes = this.getCheckIntervalInMinutes();
     const checksSpreeCount = this.statusChecksCount;
     const friendlyStatusPhrase = this.wrappedStatus.status === null ? 'Unknown' : this.getStatusFriendlyPhrase(this.wrappedStatus.status);
