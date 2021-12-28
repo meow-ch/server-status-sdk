@@ -7,6 +7,9 @@ const env: Env = {};
 
 hasKeyOrThrow(process.env, 'CHECK_INTERVAL_SEC');
 
+hasKeyOrThrow(process.env, 'URI_PATH');
+hasKeyOrThrow(process.env, 'SERVER_STATUS_DOMAIN');
+
 hasKeyOrThrow(process.env, 'STATUS_UP_EMAIL_NOTIF_SUBJECT');
 hasKeyOrThrow(process.env, 'STATUS_UP_EMAIL_NOTIF_TEXT');
 hasKeyOrThrow(process.env, 'STATUS_DOWN_EMAIL_NOTIF_SUBJECT');
