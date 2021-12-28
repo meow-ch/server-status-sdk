@@ -1,6 +1,6 @@
 import Dev_ServerBugError from "../errors/Dev_ServerBugError";
 import sleep from 'swiss-army-knifey/build/src/utils/sleep';
-import getStringDate, { hoursAgo, secondsToYMWDHMSSentence } from "swiss-army-knifey/build/src/utils/getStringDate";
+import { hoursAgo, secondsToYMWDHMSSentence } from "swiss-army-knifey/build/src/utils/getStringDate";
 import { CheckStatusFunc, InitializedStatus, MaybeUninitializedStatus, WrappedStatus, WrappedStatusE } from "../requestor";
 
 type GetRequestor = (uri: string) => Promise<string>;
@@ -143,7 +143,7 @@ export default class StatusCheckService {
   }
 
   getStatusStats(): StatusStats {
-    const dateLastChecked = this.lastChecked === null ? 'Never' : getStringDate(this.lastChecked);
+    const dateLastChecked = this.lastChecked === null ? 'Never' : `${new Date(this.lastChecked).toLocaleDateString()}, ${new Date(this.lastChecked).toLocaleTimeString()}`;
     const checkIntervalInMinutes = this.getCheckIntervalInMinutes();
     const checksSpreeCount = this.statusChecksCount;
     const friendlyStatusPhrase = this.wrappedStatus.status === null ? 'Unknown' : this.getStatusFriendlyPhrase(this.wrappedStatus.status);
