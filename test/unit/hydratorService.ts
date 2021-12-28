@@ -25,9 +25,9 @@ describe(`loadViewTemplate(templatePath)`, function() {
 
 describe(`hydrateView({ viewTemplate, viewData })`, function() {
   it('should have a "viewTemplate" property', async function () {
-    const viewTemplate = await hydrator.loadViewTemplate(templatePath);
+    const { viewTemplate } = await hydrator.loadViewTemplate(templatePath);
     const hydrationData = {
-      ...viewTemplate,
+      viewTemplate,
       viewData: mockViewDataWithEmptyErros,
     }
     expect(hydrator.hydrateView(hydrationData)).to.be.equal(hydrationOutputGen(mockViewDataWithEmptyErros));

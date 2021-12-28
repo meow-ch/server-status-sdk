@@ -20,9 +20,6 @@ interface HtmlTemplateConstructor {
   new (config: HtmlTemplateConfInterface): HtmlTemplateInterface;
 }
 
-interface ViewData {
-  [k: string]: string | ViewData | ViewData[];
-}
 interface HydrateViewProps { viewTemplate: string; viewData: ViewData; }
 type HydrateViewMethod = (param: LoadViewTemplateResolveParam) => string;
 type MostachitoHydrateMethod = (viewTemplate: string, viewData: ViewData) => string;
