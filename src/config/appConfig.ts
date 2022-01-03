@@ -10,5 +10,5 @@ export default {
   domain,
   scheme,
   url,
-  siteTitle: process.env.SITE_TITLE || 'Server Status Check',
+  siteTitle: process.env.SITE_TITLE || 'Your service',
 };

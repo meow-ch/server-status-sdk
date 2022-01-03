@@ -6,26 +6,26 @@ const loadDictElement: LoadDictElement<GetInstanceType<typeof StatusCheckService
 
   before({ deps: predeps }) {
     const { appConfig, ...deps } = predeps;
-    const url = appConfig.url;
+    const { url, siteTitle } = appConfig;
     const notificationMessages = {
       email: {
         up: {
-          subject: process.env.STATUS_UP_EMAIL_NOTIF_SUBJECT,
-          text: process.env.STATUS_UP_EMAIL_NOTIF_TEXT?.replace("{{ URL }}", url),
+          subject: process.env.STATUS_UP_EMAIL_NOTIF_SUBJECT?.replace("{{ SITE_TITLE }}", siteTitle),
+          text: process.env.STATUS_UP_EMAIL_NOTIF_TEXT?.replace("{{ URL }}", url)?.replace("{{ SITE_TITLE }}", siteTitle),
         },
         down: {
-          subject: process.env.STATUS_DOWN_EMAIL_NOTIF_SUBJECT,
-          text: process.env.STATUS_DOWN_EMAIL_NOTIF_TEXT?.replace("{{ URL }}", url),
+          subject: process.env.STATUS_DOWN_EMAIL_NOTIF_SUBJECT?.replace("{{ SITE_TITLE }}", siteTitle),
+          text: process.env.STATUS_DOWN_EMAIL_NOTIF_TEXT?.replace("{{ URL }}", url)?.replace("{{ SITE_TITLE }}", siteTitle),
         },
       },
       sms: {
         up: {
-          subject: process.env.STATUS_UP_SMS_NOTIF_SUBJECT,
-          text: process.env.STATUS_UP_SMS_NOTIF_TEXT?.replace("{{ URL }}", url),
+          subject: process.env.STATUS_UP_SMS_NOTIF_SUBJECT?.replace("{{ SITE_TITLE }}", siteTitle),
+          text: process.env.STATUS_UP_SMS_NOTIF_TEXT?.replace("{{ URL }}", url)?.replace("{{ SITE_TITLE }}", siteTitle),
         },
         down: {
-          subject: process.env.STATUS_DOWN_SMS_NOTIF_SUBJECT,
-          text: process.env.STATUS_DOWN_SMS_NOTIF_TEXT?.replace("{{ URL }}", url),
+          subject: process.env.STATUS_DOWN_SMS_NOTIF_SUBJECT?.replace("{{ SITE_TITLE }}", siteTitle),
+          text: process.env.STATUS_DOWN_SMS_NOTIF_TEXT?.replace("{{ URL }}", url)?.replace("{{ SITE_TITLE }}", siteTitle),
         },
       }
     };
