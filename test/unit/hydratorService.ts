@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import path from 'path';
 import Mostachito from 'mostachito';
 import TemplateHydratorService from '../../src/services/TemplateHydratorService';
-import { mockViewDataWithEmptyErros, hydrationOutputGen } from '../expectedHydrationOutput';
+import { mockViewDataWithEmptyErros, hydrationOutputGen, mockViewDataWithErros } from '../expectedHydrationOutput';
 
 const templatePath = path.normalize(path.join(__dirname, `../../../src/views/status.html`));
 const te = new Mostachito();
@@ -31,5 +31,14 @@ describe(`hydrateView({ viewTemplate, viewData })`, function() {
       viewData: mockViewDataWithEmptyErros,
     }
     expect(hydrator.hydrateView(hydrationData)).to.be.equal(hydrationOutputGen(mockViewDataWithEmptyErros));
+  });
+  it('should have be able to load errors', async function () {
+    const { viewTemplate } = await hydrator.loadViewTemplate(templatePath);
+    const hydrationData = {
+      viewTemplate,
+      viewData: mockViewDataWithErros,
+    };
+    console.log(hydrationData);
+    expect(hydrator.hydrateView(hydrationData)).to.be.equal(hydrationOutputGen(mockViewDataWithErros));
   });
 });

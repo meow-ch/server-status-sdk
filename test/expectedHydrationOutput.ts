@@ -8,10 +8,11 @@ const statusInfo = {
   checksSpreeCount: "899",
   aliveForYMDHMS: "1234",
   errors: [
-    { message: 'error 0'},
-    { message: 'error 1'}
+    new Error('error 0'),
+    new Error('error 1')
   ]
 };
+
 export const mockViewDataWithErros = {
   siteTitle,
   secondsBeforeAutoRefresh,
@@ -35,11 +36,12 @@ export const hydrationOutputGen = (data: typeof mockViewDataWithErros | typeof m
                 <td>Error message :</td>
                 <td>${statusInfo.errors[0].message}</td>
               </tr>
+            
               <tr>
                 <td>Error message :</td>
                 <td>${statusInfo.errors[1].message}</td>
               </tr>
-`
+            `
     : '';
 
   return `<!doctype html>
