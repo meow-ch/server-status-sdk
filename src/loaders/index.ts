@@ -9,7 +9,7 @@ import env from './env';
 import events from './events';
 import getRequestor from './getRequestor';
 import loggerDict, { logger } from './logger'
-import MISSING_REF_VALUE_REPLACEMENT from './SSC_USER_CHECK_FILE_ROOT_RELATIVE_PATH';
+import MISSING_REF_VALUE_REPLACEMENT from './MISSING_REF_VALUE_REPLACEMENT';
 import missingRefValueReplacementCallback from './missingRefValueReplacementCallback';
 import mostachito from './mostachito';
 import notifyAll from './notifyAll';
