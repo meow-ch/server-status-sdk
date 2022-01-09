@@ -1,6 +1,6 @@
 {
   "name": "status-check-sdk",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "query the server periodically to check whether it is up",
   "main": "build/index.js",
   "scripts": {
