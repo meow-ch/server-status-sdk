@@ -7,7 +7,6 @@ import appConfig from './appConfig';
 import checkStatus from './checkStatus'
 import env from './env';
 import events from './events';
-import getRequestor from './getRequestor';
 import loggerDict, { logger } from './logger'
 import MISSING_REF_VALUE_REPLACEMENT from './MISSING_REF_VALUE_REPLACEMENT';
 import missingRefValueReplacementCallback from './missingRefValueReplacementCallback';
@@ -30,7 +29,6 @@ const injectionDict = {
   checkStatus,
   env,
   events,
-  getRequestor,
   logger: loggerDict,
   mailConfig,
   mailSend,
