@@ -1,6 +1,5 @@
 import Dev_ServerBugError from "../errors/Dev_ServerBugError";
-import sleep from 'swiss-army-knifey/build/src/utils/sleep';
-import { hoursAgo, secondsToYMWDHMSSentence } from "swiss-army-knifey/build/src/utils/getStringDate";
+import { hoursAgo, sleep, secondsToYMWDHMSSentence } from "swiss-army-knifey";
 import { CheckStatusFunc, InitializedStatus, MaybeUninitializedStatus, WrappedStatus, WrappedStatusE } from "../requestor";
 
 type GetRequestor = (uri: string) => Promise<string>;

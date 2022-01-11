@@ -1,7 +1,7 @@
 import { LoadDictElement } from 'di-why/build/src/DiContainer';
 import 'dotenv/config';
 import { Env } from '../requestor';
-import { hasKeyOrThrow } from 'swiss-army-knifey/build/src/utils/envHasKey';
+import { hasKeyOrThrow } from 'swiss-army-knifey';
 
 const env: Env = {};
 

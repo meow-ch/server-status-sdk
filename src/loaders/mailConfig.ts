@@ -1,5 +1,5 @@
 import { LoadDictElement } from 'di-why/build/src/DiContainer';
-import { getKeyOrThrow } from 'swiss-army-knifey/build/src/utils/envHasKey';
+import { getKeyOrThrow } from 'swiss-army-knifey';
 
 export type MailConfig = {
   defaultFromName: string;
